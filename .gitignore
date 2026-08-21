@@ -1,0 +1,35 @@
+﻿## .NET ##
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.dll
+*.pdb
+
+## SQLite ##
+*.db
+*.db-shm
+*.db-wal
+
+## Node / Vue / Vite ##
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vite/
+
+## Env files ##
+.env
+.env.local
+.env.*.local
+
+## OS / IDE ##
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+## Logs ##
+*.log
+npm-debug.log*
