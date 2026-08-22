@@ -11,17 +11,22 @@ public class AppDbContext : DbContext
     public DbSet<Barcode> Barcodes => Set<Barcode>();
     public DbSet<User> Users => Set<User>();
     public DbSet<DiaryEntry> DiaryEntries => Set<DiaryEntry>();
+    public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Уникальность штрихкода — на один код только один продукт
+        // Уникальность штрихкода - на один код только один продукт
         modelBuilder.Entity<Barcode>()
             .HasIndex(b => b.Code)
             .IsUnique();
 
-        // Индекс по имени продукта — для быстрого поиска
+        // Индекс по имени продукта - для быстрого поиска
         modelBuilder.Entity<Product>()
             .HasIndex(p => p.Name);
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
 
         base.OnModelCreating(modelBuilder);
     }

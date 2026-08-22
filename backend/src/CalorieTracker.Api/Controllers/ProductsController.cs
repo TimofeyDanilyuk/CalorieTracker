@@ -2,6 +2,7 @@ using CalorieTracker.Api.Dtos;
 using CalorieTracker.Domain.Entities;
 using CalorieTracker.Infrastructure.Data;
 using CalorieTracker.Infrastructure.ExternalApis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ namespace CalorieTracker.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ProductsController : ControllerBase
 {
     private readonly AppDbContext _db;
@@ -43,7 +45,7 @@ public class ProductsController : ControllerBase
     [HttpGet("barcode/{code}")]
     public async Task<ActionResult<ProductSearchResultDto>> GetByBarcode(string code)
     {
-        // 1. Сначала своя БД — быстро и без внешних вызовов
+        // 1. Сначала своя БД - быстро и без внешних вызовов
         var existing = await _db.Barcodes
             .Include(b => b.Product)
             .FirstOrDefaultAsync(b => b.Code == code);
@@ -56,7 +58,7 @@ public class ProductsController : ControllerBase
                 p.CaloriesPer100g, p.ProteinPer100g, p.FatPer100g, p.CarbsPer100g));
         }
 
-        // 2. Если нет — идём в Open Food Facts
+        // 2. Если нет - идём в Open Food Facts
         var offProduct = await _openFoodFacts.GetProductByBarcodeAsync(code);
 
         if (offProduct is null || offProduct.Nutriments is null)
@@ -84,7 +86,7 @@ public class ProductsController : ControllerBase
             newProduct.CaloriesPer100g, newProduct.ProteinPer100g, newProduct.FatPer100g, newProduct.CarbsPer100g));
     }
 
-    // POST /api/products — ручное добавление (магазинный творожок, которого нет в OFF)
+    // POST /api/products - ручное добавление (магазинный творожок, которого нет в OFF)
     [HttpPost]
     public async Task<ActionResult<ProductSearchResultDto>> Create(CreateProductDto dto)
     {

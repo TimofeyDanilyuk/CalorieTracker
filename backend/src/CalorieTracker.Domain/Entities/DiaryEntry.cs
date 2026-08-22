@@ -13,6 +13,6 @@ public class DiaryEntry
     public decimal AmountGrams { get; set; } // сколько грамм съедено
     public DateTime EatenAt { get; set; } = DateTime.UtcNow;
 
-    // завтрак/обед/ужин/перекус — для удобной группировки в UI
+    // завтрак/обед/ужин/перекус - для удобной группировки в UI
     public string MealType { get; set; } = "snack";
 }
